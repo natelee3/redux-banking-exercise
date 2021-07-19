@@ -50,8 +50,22 @@ const store = createStore(
 store.subscribe(() => {
     console.log('State has updated');
     const state = store.getState();
-    console.log(state);
-})
+    const balance = document.querySelector('#balance');
+    balance.innerText = state.balance;
+});
 
-store.dispatch(actionIncrement(400));
-store.dispatch(actionDecrement(40))
+const increaseButton = document.querySelector('#increase');
+const decreaseButton = document.querySelector('#decrease');
+const amount = document.querySelector('#amount');
+
+increaseButton.addEventListener('click', (e) => {
+    e.preventDefault();
+    const amountValue = parseInt(amount.value);
+    store.dispatch(actionIncrement(amountValue));
+});
+
+decreaseButton.addEventListener('click', (e) => {
+    e.preventDefault();
+    const amountValue = parseInt(amount.value);
+    store.dispatch(actionDecrement(amountValue));
+});

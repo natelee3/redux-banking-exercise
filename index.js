@@ -1,6 +1,8 @@
 'use strict';
 
-import { createStore } from 'redux';
+// import { createStore } from 'redux';
+
+const { createStore } = Redux;
 
 console.log('App started');
 
@@ -11,12 +13,18 @@ const defaultState = {
 };
 
 //Action!
-const actionIncrement = {
-    type: 'INCREMENT'
+const actionIncrement = (amount) => {
+    return {
+        type: 'INCREMENT',
+        payload: amount
+    }
 };
 
-const actionDecrement = {
-    type: 'DECREMENT'
+const actionDecrement = (amount) => {
+    return {
+        type: 'DECREMENT',
+        payload: amount
+    }
 };
 
 //Reducer
@@ -24,25 +32,26 @@ function account(state = defaultState, action) {
     switch (action.type) {
         case 'INCREMENT':
             return {
-                balance: state.balance + 1
+                balance: state.balance + action.payload
             }
         case 'DECREMENT':
             return {
-                balance: state.balance - 1
+                balance: state.balance - action.payload
             }
     }
 
     return state;
 }
 
-const store = createStore(account);
+const store = createStore(
+    account,
+    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+    );
 store.subscribe(() => {
     console.log('State has updated');
     const state = store.getState();
     console.log(state);
 })
 
-store.dispatch(actionIncrement);
-store.dispatch(actionIncrement);
-store.dispatch(actionIncrement);
-store.dispatch(actionDecrement);
+store.dispatch(actionIncrement(400));
+store.dispatch(actionDecrement(40))
